@@ -1,5 +1,7 @@
 package tv.lostin.entity;
 
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -10,6 +12,7 @@ import java.util.Date;
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
+@TableName("file")
 public class FileEntity extends BaseEntity {
     private String path;
     private String name;
@@ -20,8 +23,4 @@ public class FileEntity extends BaseEntity {
     private String size;
     private String duration;
     private Date lastScanTime;
-
-    public Boolean isDirectory() {
-        return directory.equals(1);
-    }
 }

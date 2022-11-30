@@ -7,12 +7,6 @@ import lombok.SneakyThrows;
 
 import lombok.Data;
 
-/**
- * 数据结果返回 对象
- *
- * @author liangzhicong
- * @date 2021年6月8日 下午2:18:15
- */
 @Data
 public class JsonResponse<T> implements Serializable {
 

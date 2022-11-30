@@ -3,6 +3,7 @@ package tv.lostin.entity;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 /**
  * Description
@@ -13,6 +14,7 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true)
 @Data
 @TableName("folder")
+@ToString(callSuper = true)
 public class FolderEntity extends BaseEntity {
     private Long deviceId;
     private String path;

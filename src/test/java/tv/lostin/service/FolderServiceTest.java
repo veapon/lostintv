@@ -1,5 +1,6 @@
 package tv.lostin.service;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.junit.jupiter.api.Assertions;
@@ -29,9 +30,9 @@ public class FolderServiceTest {
     public void testAdd() {
         FolderDTO dto = new FolderDTO();
         dto.setType("Music");
-        dto.setPath("/Music");
-        dto.setDeviceId(1L);
-        dto.setMountPoint("/Music");
+        dto.setPath("/Users/veapon/Music/tmp");
+        dto.setDeviceId(5L);
+        dto.setMountPoint("/Music-1");
         FolderEntity entity = folderService.add(dto);
         System.out.println(entity);
         Assertions.assertNotNull(entity);
@@ -48,7 +49,7 @@ public class FolderServiceTest {
     @Test
     void all() {
         List<FolderEntity> list = folderService.all();
-        System.out.println(list.size());
+        System.out.println(list);
         Assertions.assertNotNull(list);
     }
 
@@ -59,5 +60,10 @@ public class FolderServiceTest {
         FolderEntity info = folderService.info(id);
         System.out.println(info);
         Assertions.assertNull(info);
+    }
+
+    @Test
+    void scan() throws Exception {
+        folderService.scan(9L);
     }
 }

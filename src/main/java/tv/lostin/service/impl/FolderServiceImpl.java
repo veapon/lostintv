@@ -1,10 +1,13 @@
 package tv.lostin.service.impl;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -13,14 +16,12 @@ import lombok.AllArgsConstructor;
 import org.springframework.util.Assert;
 import tv.lostin.entity.DeviceEntity;
 import tv.lostin.entity.FolderEntity;
-import tv.lostin.mapper.DeviceMapper;
 import tv.lostin.mapper.FolderMapper;
-import tv.lostin.request.DeviceDTO;
 import tv.lostin.request.FolderDTO;
-import tv.lostin.response.FolderVO;
 import tv.lostin.service.DeviceService;
-import tv.lostin.service.DeviceTypeService;
 import tv.lostin.service.FolderService;
+import tv.lostin.strategy.DeviceFactory;
+import tv.lostin.strategy.DeviceStrategy;
 
 /**
  * Description
@@ -30,10 +31,13 @@ import tv.lostin.service.FolderService;
  */
 @Service
 @AllArgsConstructor
+@Slf4j
 public class FolderServiceImpl extends ServiceImpl<FolderMapper, FolderEntity> implements FolderService {
 
     private final FolderMapper folderMapper;
     private final DeviceService deviceService;
+    @Autowired
+    private DeviceFactory deviceFactory;
 
     @Override
     public FolderEntity add(FolderDTO dto) {
@@ -83,11 +87,19 @@ public class FolderServiceImpl extends ServiceImpl<FolderMapper, FolderEntity> i
         );
     }
 
+    @Override
     public void scan(Long id) {
         FolderEntity folder = this.getById(id);
         Assert.notNull(folder, "找不到该文件夹");
 
         DeviceEntity device = deviceService.info(folder.getDeviceId());
+        try {
+            DeviceStrategy strategy = deviceFactory.getStrategy(device.getType());
+            strategy.scan(folder);
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.error(e.getMessage());
+        }
 
     }
 }

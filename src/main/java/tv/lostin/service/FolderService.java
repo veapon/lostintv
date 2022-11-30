@@ -1,5 +1,6 @@
 package tv.lostin.service;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -25,4 +26,5 @@ public interface FolderService extends IService<FolderEntity> {
     FolderEntity delete(Long id);
     FolderEntity info(Long id);
     List<FolderEntity> all();
+    void scan(Long id) throws IOException, Exception;
 }

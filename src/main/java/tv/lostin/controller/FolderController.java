@@ -89,8 +89,8 @@ public class FolderController {
     }
 
     @GetMapping("/{id}/scan")
-    public void scan(@PathVariable(value = "id") Long id)
-    {
-
+    public JsonResponse<Object> scan(@PathVariable(value = "id") Long id) throws Exception {
+        folderService.scan(id);
+        return JsonResponse.success();
     }
 }

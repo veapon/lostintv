@@ -25,10 +25,11 @@ public class DeviceServiceTest {
     @Test
     public void testAdd() {
         DeviceDTO deviceDTO = new DeviceDTO();
-        deviceDTO.setType(DeviceTypeConstant.TYPE_SMB);
-        deviceDTO.setHost("10.1.10.22");
-        deviceDTO.setUser("vagrant");
-        deviceDTO.setPassword("vagrant");
+        deviceDTO.setType(DeviceTypeConstant.TYPE_LOCAL);
+//        deviceDTO.setHost("lostintv.ddns.net");
+//        deviceDTO.setPort("10445");
+//        deviceDTO.setUser("veapon");
+//        deviceDTO.setPassword("Lv123654*-");
         DeviceEntity deviceEntity = deviceService.create(deviceDTO);
         System.out.println(deviceEntity);
         Assertions.assertNotEquals(null, deviceEntity.getId());
@@ -46,7 +47,7 @@ public class DeviceServiceTest {
     @Test
     void all() {
         List<DeviceEntity> list = deviceService.all();
-        System.out.println(list.size());
+        System.out.println(list);
         Assertions.assertNotNull(list);
     }
 
