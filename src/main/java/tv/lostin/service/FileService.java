@@ -1,5 +1,7 @@
 package tv.lostin.service;
 
+import tv.lostin.entity.FileEntity;
+
 /**
  * Description
  *
@@ -8,4 +10,9 @@ package tv.lostin.service;
  */
 public interface FileService {
 
+    /**
+     *
+     * @param file
+     */
+    public void asyncSave(FileEntity file);
 }
