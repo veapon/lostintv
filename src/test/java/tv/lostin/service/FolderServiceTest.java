@@ -1,6 +1,7 @@
 package tv.lostin.service;
 
 import java.io.IOException;
+import java.io.InvalidClassException;
 import java.util.List;
 
 import org.junit.jupiter.api.Assertions;
@@ -31,16 +32,28 @@ public class FolderServiceTest {
         FolderDTO dto = new FolderDTO();
         dto.setType("Music");
         dto.setPath("/Users/veapon/Music/tmp");
-        dto.setDeviceId(5L);
-        dto.setMountPoint("/Music-1");
+        dto.setDeviceId(1L);
+        dto.setMountPoint("/Music");
         FolderEntity entity = folderService.add(dto);
         System.out.println(entity);
         Assertions.assertNotNull(entity);
     }
 
     @Test
+    public void testAddNotExistsDevice() {
+        FolderDTO dto = new FolderDTO();
+        dto.setType("Music");
+        dto.setPath("/Users/veapon/Music/tmp");
+        dto.setDeviceId(-1L);
+        dto.setMountPoint("/Music");
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            folderService.add(dto);
+        });
+    }
+
+    @Test
     void info() {
-        Long id = 1L;
+        Long id = 2L;
         FolderEntity info = folderService.info(id);
         System.out.println(info);
         Assertions.assertEquals(info.getId(), id);
@@ -64,6 +77,6 @@ public class FolderServiceTest {
 
     @Test
     void scan() throws Exception {
-        folderService.scan(9L);
+        folderService.scan(2L);
     }
 }

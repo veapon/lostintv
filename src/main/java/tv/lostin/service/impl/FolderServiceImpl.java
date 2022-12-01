@@ -36,11 +36,13 @@ public class FolderServiceImpl extends ServiceImpl<FolderMapper, FolderEntity> i
 
     private final FolderMapper folderMapper;
     private final DeviceService deviceService;
-    @Autowired
-    private DeviceFactory deviceFactory;
+    private final DeviceFactory deviceFactory;
 
     @Override
     public FolderEntity add(FolderDTO dto) {
+        DeviceEntity device = deviceService.info(dto.getDeviceId());
+        Assert.notNull(device, String.format("device not found(id=%s)", dto.getDeviceId()));
+
         FolderEntity folderEntity = new FolderEntity();
         folderEntity.setType(dto.getType());
         folderEntity.setPath(dto.getPath());
@@ -90,9 +92,11 @@ public class FolderServiceImpl extends ServiceImpl<FolderMapper, FolderEntity> i
     @Override
     public void scan(Long id) {
         FolderEntity folder = this.getById(id);
-        Assert.notNull(folder, "找不到该文件夹");
+        Assert.notNull(folder, String.format("folder not found(id=%d)", id));
 
         DeviceEntity device = deviceService.info(folder.getDeviceId());
+        Assert.notNull(folder, String.format("device not found(id=%d)", folder.getDeviceId()));
+
         try {
             DeviceStrategy strategy = deviceFactory.getStrategy(device.getType());
             strategy.scan(folder);
@@ -100,6 +104,5 @@ public class FolderServiceImpl extends ServiceImpl<FolderMapper, FolderEntity> i
             e.printStackTrace();
             log.error(e.getMessage());
         }
-
     }
 }

@@ -26,12 +26,8 @@ public class DeviceServiceTest {
     public void testAdd() {
         DeviceDTO deviceDTO = new DeviceDTO();
         deviceDTO.setType(DeviceTypeConstant.TYPE_LOCAL);
-//        deviceDTO.setHost("lostintv.ddns.net");
-//        deviceDTO.setPort("10445");
-//        deviceDTO.setUser("veapon");
-//        deviceDTO.setPassword("Lv123654*-");
         DeviceEntity deviceEntity = deviceService.create(deviceDTO);
-        System.out.println(deviceEntity);
+//        System.out.println(deviceEntity);
         Assertions.assertNotEquals(null, deviceEntity.getId());
         Assertions.assertEquals(deviceDTO.getHost(), deviceEntity.getAlias());
     }
@@ -40,7 +36,7 @@ public class DeviceServiceTest {
     void info() {
         Long id = 1L;
         DeviceEntity info = deviceService.info(id);
-        System.out.println(info);
+//        System.out.println(info);
         Assertions.assertEquals(info.getId(), id);
     }
 

@@ -23,6 +23,16 @@ public class FileServiceImpl extends ServiceImpl<FileMapper, FileEntity> impleme
     @Override
     @Async("asyncTaskExecutor")
     public void asyncSave(FileEntity file) {
+        boolean exists = lambdaQuery().eq(FileEntity::getDeviceId, file.getDeviceId())
+                .eq(FileEntity::getFolderId, file.getFolderId())
+                .eq(FileEntity::getPath, file.getPath())
+                .exists();
+        if (exists) {
+            log.info("file exists: " + file.getPath());
+            return;
+        }
 
+        log.info("inserting new file: " + file.getPath());
+        getBaseMapper().insert(file);
     }
 }

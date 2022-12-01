@@ -4,11 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 import tv.lostin.entity.FileEntity;
 import tv.lostin.entity.FolderEntity;
-import tv.lostin.mapper.FileMapper;
 import tv.lostin.service.FileService;
 import tv.lostin.strategy.DeviceStrategy;
 
@@ -16,7 +14,6 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Arrays;
 
 /**
  * Description
@@ -52,6 +49,7 @@ public class LocalDevice implements DeviceStrategy {
                         fileEntity.setExtension(FilenameUtils.getExtension(file.getPath()));
                         fileEntity.setFolderId(folder.getId());
                         fileEntity.setDeviceId(folder.getDeviceId());
+                        fileService.asyncSave(fileEntity);
                     });
             log.info("scan finished, elapsed time: " + (System.currentTimeMillis() - s) + " ms");
         } catch (IOException e) {

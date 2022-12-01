@@ -17,7 +17,7 @@ public class DeviceFactory {
     @Autowired
     private Map<String, DeviceStrategy> strategies;
 
-    public DeviceStrategy getStrategy(String type) throws Exception{
+    public DeviceStrategy getStrategy(String type) {
         DeviceStrategy strategy = strategies.get(type.concat("Device"));
         if(strategy == null) {
             throw new RuntimeException("不支持的设备类型：" + type);
