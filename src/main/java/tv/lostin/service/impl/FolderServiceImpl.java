@@ -1,21 +1,18 @@
 package tv.lostin.service.impl;
 
-import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
 import lombok.AllArgsConstructor;
 import org.springframework.util.Assert;
-import tv.lostin.entity.DeviceEntity;
-import tv.lostin.entity.FolderEntity;
+import tv.lostin.entity.Device;
+import tv.lostin.entity.Folder;
 import tv.lostin.mapper.FolderMapper;
 import tv.lostin.request.FolderDTO;
 import tv.lostin.service.DeviceService;
@@ -30,20 +27,20 @@ import tv.lostin.strategy.DeviceStrategy;
  * @date 2022/1/8
  */
 @Service
-@AllArgsConstructor
 @Slf4j
-public class FolderServiceImpl extends ServiceImpl<FolderMapper, FolderEntity> implements FolderService {
+@AllArgsConstructor
+public class FolderServiceImpl extends ServiceImpl<FolderMapper, Folder> implements FolderService {
 
     private final FolderMapper folderMapper;
     private final DeviceService deviceService;
     private final DeviceFactory deviceFactory;
 
     @Override
-    public FolderEntity add(FolderDTO dto) {
-        DeviceEntity device = deviceService.info(dto.getDeviceId());
+    public Folder add(FolderDTO dto) {
+        Device device = deviceService.info(dto.getDeviceId());
         Assert.notNull(device, String.format("device not found(id=%s)", dto.getDeviceId()));
 
-        FolderEntity folderEntity = new FolderEntity();
+        Folder folderEntity = new Folder();
         folderEntity.setType(dto.getType());
         folderEntity.setPath(dto.getPath());
         folderEntity.setMountPoint(dto.getMountPoint());
@@ -53,19 +50,20 @@ public class FolderServiceImpl extends ServiceImpl<FolderMapper, FolderEntity> i
     }
 
     @Override
-    public FolderEntity update(Long id, FolderDTO dto) {
-        FolderEntity entity = this.getById(id);
+    public Folder update(Long id, FolderDTO dto) {
+        Folder entity = this.getById(id);
         Assert.notNull(entity, "找不到该文件夹");
         entity.setType(dto.getType());
         entity.setPath(dto.getPath());
         entity.setMountPoint(dto.getMountPoint());
         entity.setDeviceId(dto.getDeviceId());
+        folderMapper.updateById(entity);
         return entity;
     }
 
     @Override
-    public FolderEntity delete(Long id) {
-        FolderEntity entity = this.getById(id);
+    public Folder delete(Long id) {
+        Folder entity = this.getById(id);
         Assert.notNull(entity, "找不到该文件夹");
         entity.setDeletedAt(new Date());
         folderMapper.updateById(entity);
@@ -73,28 +71,28 @@ public class FolderServiceImpl extends ServiceImpl<FolderMapper, FolderEntity> i
     }
 
     @Override
-    public FolderEntity info(Long id) {
+    public Folder info(Long id) {
         return folderMapper.selectOne(
-                new QueryWrapper<FolderEntity>()
+                new QueryWrapper<Folder>()
                     .eq("id", id)
                     .isNull("deleted_at")
         );
     }
 
     @Override
-    public List<FolderEntity> all() {
+    public List<Folder> all() {
         return folderMapper.selectList(
-                new QueryWrapper<FolderEntity>()
+                new QueryWrapper<Folder>()
                     .isNull("deleted_at")
         );
     }
 
     @Override
     public void scan(Long id) {
-        FolderEntity folder = this.getById(id);
+        Folder folder = this.getById(id);
         Assert.notNull(folder, String.format("folder not found(id=%d)", id));
 
-        DeviceEntity device = deviceService.info(folder.getDeviceId());
+        Device device = deviceService.info(folder.getDeviceId());
         Assert.notNull(folder, String.format("device not found(id=%d)", folder.getDeviceId()));
 
         try {

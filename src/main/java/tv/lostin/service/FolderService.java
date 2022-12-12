@@ -7,9 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 
-import tv.lostin.entity.DeviceEntity;
-import tv.lostin.entity.FolderEntity;
-import tv.lostin.request.DeviceDTO;
+import tv.lostin.entity.Folder;
 import tv.lostin.request.FolderDTO;
 
 /**
@@ -19,12 +17,12 @@ import tv.lostin.request.FolderDTO;
  * @date 2022/1/8
  */
 @Service
-public interface FolderService extends IService<FolderEntity> {
+public interface FolderService extends IService<Folder> {
 
-    FolderEntity add(FolderDTO dto);
-    FolderEntity update(Long id, FolderDTO dto);
-    FolderEntity delete(Long id);
-    FolderEntity info(Long id);
-    List<FolderEntity> all();
+    Folder add(FolderDTO dto);
+    Folder update(Long id, FolderDTO dto);
+    Folder delete(Long id);
+    Folder info(Long id);
+    List<Folder> all();
     void scan(Long id) throws IOException, Exception;
 }

@@ -20,7 +20,7 @@ public class DeviceFactory {
     public DeviceStrategy getStrategy(String type) {
         DeviceStrategy strategy = strategies.get(type.concat("Device"));
         if(strategy == null) {
-            throw new RuntimeException("不支持的设备类型：" + type);
+            throw new RuntimeException("Unsupported device type：" + type);
         }
         return strategy;
     }

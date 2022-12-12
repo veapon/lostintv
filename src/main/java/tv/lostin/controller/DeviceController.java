@@ -1,6 +1,6 @@
 package tv.lostin.controller;
 
-import tv.lostin.entity.DeviceEntity;
+import tv.lostin.entity.Device;
 import tv.lostin.request.DeviceDTO;
 import tv.lostin.response.DeviceVO;
 import tv.lostin.response.JsonResponse;
@@ -33,7 +33,7 @@ public class DeviceController {
      */
     @PostMapping("/")
     public JsonResponse<DeviceVO> create(@RequestBody DeviceDTO dto) {
-        DeviceEntity entity = deviceService.create(dto);
+        Device entity = deviceService.create(dto);
         DeviceVO vo = new DeviceVO();
         BeanUtils.copyProperties(entity, vo);
         return JsonResponse.success(vo);
@@ -48,7 +48,7 @@ public class DeviceController {
      */
     @PutMapping("/{id}")
     public JsonResponse<DeviceVO> update(@RequestBody DeviceDTO dto, @PathVariable(value = "id") Long id) {
-        DeviceEntity entity = deviceService.update(id, dto);
+        Device entity = deviceService.update(id, dto);
         DeviceVO vo = new DeviceVO();
         BeanUtils.copyProperties(entity, vo);
         return JsonResponse.success(vo);
@@ -61,7 +61,7 @@ public class DeviceController {
      */
     @GetMapping("/")
     public JsonResponse<List<DeviceVO>> query() {
-        List<DeviceEntity> list = deviceService.all();
+        List<Device> list = deviceService.all();
         List<DeviceVO> voList = new ArrayList<>();
         if (!list.isEmpty()) {
             list.forEach(e -> {
@@ -82,7 +82,7 @@ public class DeviceController {
 
     @GetMapping("/{id}")
     public JsonResponse<DeviceVO> info(@PathVariable(value = "id") Long id) {
-        DeviceEntity entity = deviceService.info(id);
+        Device entity = deviceService.info(id);
         DeviceVO vo = new DeviceVO();
         BeanUtils.copyProperties(entity, vo);
         return JsonResponse.success(vo);

@@ -1,7 +1,7 @@
 package tv.lostin.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import tv.lostin.entity.DeviceEntity;
+import tv.lostin.entity.Device;
 import tv.lostin.request.DeviceDTO;
 import org.springframework.stereotype.Service;
 
@@ -14,11 +14,11 @@ import java.util.List;
  * @date 2022/1/8
  */
 @Service
-public interface DeviceService extends IService<DeviceEntity> {
+public interface DeviceService extends IService<Device> {
 
-    DeviceEntity create(DeviceDTO dto);
-    DeviceEntity update(Long id, DeviceDTO dto);
+    Device create(DeviceDTO dto);
+    Device update(Long id, DeviceDTO dto);
     boolean delete(Long id);
-    DeviceEntity info(Long id);
-    List<DeviceEntity> all();
+    Device info(Long id);
+    List<Device> all();
 }

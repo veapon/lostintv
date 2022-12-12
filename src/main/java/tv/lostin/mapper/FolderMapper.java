@@ -4,8 +4,7 @@ import org.apache.ibatis.annotations.Mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
-import tv.lostin.entity.DeviceEntity;
-import tv.lostin.entity.FolderEntity;
+import tv.lostin.entity.Folder;
 
 /**
  * Description
@@ -14,5 +13,5 @@ import tv.lostin.entity.FolderEntity;
  * @date 2022/1/10
  */
 @Mapper
-public interface FolderMapper extends BaseMapper<FolderEntity> {
+public interface FolderMapper extends BaseMapper<Folder> {
 }

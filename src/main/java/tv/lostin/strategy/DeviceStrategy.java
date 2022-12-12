@@ -1,7 +1,7 @@
 package tv.lostin.strategy;
 
 import org.springframework.stereotype.Service;
-import tv.lostin.entity.FolderEntity;
+import tv.lostin.entity.Folder;
 
 import java.util.Arrays;
 
@@ -13,9 +13,9 @@ import java.util.Arrays;
  */
 @Service
 public interface DeviceStrategy {
-    public void scan(FolderEntity folder);
+    public void scan(Folder folder);
 
     default Boolean isValidExtension(String extension) {
-        return Arrays.asList("mp3","flac","ape","wav","cue").contains(extension);
+        return Arrays.asList("mp3","m4a","flac","ape","wav","cue").contains(extension);
     }
 }

@@ -1,10 +1,8 @@
 package tv.lostin.response;
 
 import java.io.Serializable;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
-
 import lombok.Data;
 
 @Data

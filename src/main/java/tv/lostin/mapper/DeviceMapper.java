@@ -1,7 +1,7 @@
 package tv.lostin.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import tv.lostin.entity.DeviceEntity;
+import tv.lostin.entity.Device;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
@@ -11,5 +11,5 @@ import org.apache.ibatis.annotations.Mapper;
  * @date 2022/1/10
  */
 @Mapper
-public interface DeviceMapper extends BaseMapper<DeviceEntity> {
+public interface DeviceMapper extends BaseMapper<Device> {
 }

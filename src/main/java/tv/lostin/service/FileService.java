@@ -1,6 +1,6 @@
 package tv.lostin.service;
 
-import tv.lostin.entity.FileEntity;
+import tv.lostin.entity.File;
 
 /**
  * Description
@@ -14,5 +14,7 @@ public interface FileService {
      *
      * @param file
      */
-    public void asyncSave(FileEntity file);
+    void add(File file);
+
+    void getMetadata(File file);
 }

@@ -2,12 +2,11 @@ package tv.lostin.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
-import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
-import tv.lostin.entity.DeviceEntity;
-import tv.lostin.entity.FolderEntity;
+import tv.lostin.entity.Device;
+import tv.lostin.entity.Folder;
 import tv.lostin.mapper.DeviceMapper;
 import tv.lostin.mapper.FolderMapper;
 import tv.lostin.request.DeviceDTO;
@@ -27,15 +26,14 @@ import java.util.Optional;
  */
 @Service
 @AllArgsConstructor
-public class DeviceServiceImpl extends ServiceImpl<DeviceMapper, DeviceEntity> implements DeviceService {
+public class DeviceServiceImpl extends ServiceImpl<DeviceMapper, Device> implements DeviceService {
 
     private final DeviceMapper deviceMapper;
-    private final FolderMapper folderMapper;
 
     @Override
-    public DeviceEntity create(DeviceDTO dto) {
+    public Device create(DeviceDTO dto) {
         String alias = Optional.ofNullable(dto.getAlias()).orElse(dto.getHost());
-        DeviceEntity deviceEntity = new DeviceEntity();
+        Device deviceEntity = new Device();
         deviceEntity.setAlias(alias);
         deviceEntity.setHost(dto.getHost());
         deviceEntity.setPort(dto.getPort());
@@ -47,8 +45,8 @@ public class DeviceServiceImpl extends ServiceImpl<DeviceMapper, DeviceEntity> i
     }
 
     @Override
-    public DeviceEntity update(Long id, DeviceDTO dto) {
-        DeviceEntity entity = this.info(id);
+    public Device update(Long id, DeviceDTO dto) {
+        Device entity = this.info(id);
         Assert.notNull(entity, "找不到相关设备");
         entity.setAlias(dto.getAlias());
         entity.setHost(dto.getHost());
@@ -62,22 +60,22 @@ public class DeviceServiceImpl extends ServiceImpl<DeviceMapper, DeviceEntity> i
     @Override
     @Transactional(rollbackFor = Exception.class)
     public boolean delete(Long id) {
-        DeviceEntity entity = this.info(id);
+        Device entity = this.info(id);
         Assert.notNull(entity, "找不到相关设备");
         entity.setDeletedAt(new Date());
-        deviceMapper.updateById(entity);
-        LambdaUpdateWrapper<FolderEntity> updateWrapper = new LambdaUpdateWrapper<>();
-        updateWrapper.eq(FolderEntity::getDeviceId, id).set(FolderEntity::getDeletedAt, new Date());
+        updateById(entity);
+        LambdaUpdateWrapper<Folder> updateWrapper = new LambdaUpdateWrapper<>();
+        updateWrapper.eq(Folder::getDeviceId, id).set(Folder::getDeletedAt, new Date());
         return true;
     }
 
     @Override
-    public DeviceEntity info(Long id) {
-        return deviceMapper.selectOne(new QueryWrapper<DeviceEntity>().eq("id", id).isNull("deleted_at"));
+    public Device info(Long id) {
+        return deviceMapper.selectOne(new QueryWrapper<Device>().eq("id", id).isNull("deleted_at"));
     }
 
     @Override
-    public List<DeviceEntity> all() {
-        return deviceMapper.selectList(new QueryWrapper<DeviceEntity>().isNull("deleted_at"));
+    public List<Device> all() {
+        return deviceMapper.selectList(new QueryWrapper<Device>().isNull("deleted_at"));
     }
 }

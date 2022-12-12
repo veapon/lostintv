@@ -13,7 +13,7 @@ import java.util.Date;
 @EqualsAndHashCode(callSuper = true)
 @Data
 @TableName("file")
-public class FileEntity extends BaseEntity {
+public class File extends BaseEntity {
     private String path;
     private String name;
     private Integer directory;
@@ -21,6 +21,5 @@ public class FileEntity extends BaseEntity {
     private Long deviceId;
     private String extension;
     private String size;
-    private String duration;
     private Date lastScanTime;
 }

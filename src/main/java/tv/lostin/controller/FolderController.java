@@ -7,7 +7,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import tv.lostin.entity.FolderEntity;
+import tv.lostin.entity.Folder;
 import tv.lostin.request.FolderDTO;
 import tv.lostin.response.FolderVO;
 import tv.lostin.response.JsonResponse;
@@ -34,7 +34,7 @@ public class FolderController {
      */
     @PutMapping("/")
     public JsonResponse<FolderVO> add(@RequestBody FolderDTO dto) {
-        FolderEntity entity = folderService.add(dto);
+        Folder entity = folderService.add(dto);
         FolderVO vo = new FolderVO();
         BeanUtils.copyProperties(entity, vo);
         return JsonResponse.success(vo);
@@ -49,7 +49,7 @@ public class FolderController {
      */
     @PutMapping("/{id}")
     public JsonResponse<FolderVO> update(@RequestBody FolderDTO dto, @PathVariable(value = "id") Long id) {
-        FolderEntity entity = folderService.update(id, dto);
+        Folder entity = folderService.update(id, dto);
         FolderVO vo = new FolderVO();
         BeanUtils.copyProperties(entity, vo);
         return JsonResponse.success(vo);
@@ -62,7 +62,7 @@ public class FolderController {
      */
     @GetMapping("/")
     public JsonResponse<List<FolderVO>> query() {
-        List<FolderEntity> list = folderService.all();
+        List<Folder> list = folderService.all();
         List<FolderVO> voList = new ArrayList<>();
         if (!list.isEmpty()) {
             list.forEach(e -> {
@@ -82,7 +82,7 @@ public class FolderController {
      */
     @GetMapping("/{id}")
     public JsonResponse<FolderVO> info(@PathVariable(value = "id") Long id) {
-        FolderEntity entity = folderService.info(id);
+        Folder entity = folderService.info(id);
         FolderVO vo = new FolderVO();
         BeanUtils.copyProperties(entity, vo);
         return JsonResponse.success(vo);

@@ -1,7 +1,7 @@
 package tv.lostin.service;
 
 import tv.lostin.constant.DeviceTypeConstant;
-import tv.lostin.entity.DeviceEntity;
+import tv.lostin.entity.Device;
 import tv.lostin.request.DeviceDTO;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -26,7 +26,7 @@ public class DeviceServiceTest {
     public void testAdd() {
         DeviceDTO deviceDTO = new DeviceDTO();
         deviceDTO.setType(DeviceTypeConstant.TYPE_LOCAL);
-        DeviceEntity deviceEntity = deviceService.create(deviceDTO);
+        Device deviceEntity = deviceService.create(deviceDTO);
 //        System.out.println(deviceEntity);
         Assertions.assertNotEquals(null, deviceEntity.getId());
         Assertions.assertEquals(deviceDTO.getHost(), deviceEntity.getAlias());
@@ -35,14 +35,14 @@ public class DeviceServiceTest {
     @Test
     void info() {
         Long id = 1L;
-        DeviceEntity info = deviceService.info(id);
+        Device info = deviceService.info(id);
 //        System.out.println(info);
         Assertions.assertEquals(info.getId(), id);
     }
 
     @Test
     void all() {
-        List<DeviceEntity> list = deviceService.all();
+        List<Device> list = deviceService.all();
         System.out.println(list);
         Assertions.assertNotNull(list);
     }
@@ -51,7 +51,7 @@ public class DeviceServiceTest {
     void delete() {
         Long id = 2L;
         deviceService.delete(id);
-        DeviceEntity info = deviceService.info(id);
+        Device info = deviceService.info(id);
         System.out.println(info);
         Assertions.assertNull(info);
     }

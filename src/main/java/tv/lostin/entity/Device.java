@@ -5,19 +5,23 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
+import java.util.Date;
+
 /**
- * Description
+ * DeviceEntity
  *
  * @author veapon
- * @date 2022/1/28
+ * @date 2022/1/8
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
-@TableName("folder")
+@TableName("device")
 @ToString(callSuper = true)
-public class FolderEntity extends BaseEntity {
-    private Long deviceId;
-    private String path;
-    private String mountPoint;
+public class Device extends BaseEntity{
+    private String alias;
     private String type;
+    private String host;
+    private String port;
+    private String user;
+    private String password;
 }
