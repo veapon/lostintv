@@ -81,9 +81,7 @@ public class FileServiceImpl extends ServiceImpl<FileMapper, File> implements Fi
             String discNo = tag.getFirst(FieldKey.DISC_NO);
 
             Artist art = artistService.lambdaQuery().eq(Artist::getName, ZhConverterUtil.toSimple(artist)).one();
-            if (null == art) {
-                artistService.save(art);
-            }
+
             albumService.lambdaQuery()
                     .eq(Album::getName, ZhConverterUtil.toSimple(album))
                     .eq(Album::getArtistId, art.getId())
