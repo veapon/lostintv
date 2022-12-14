@@ -36,14 +36,14 @@ public class DeviceServiceTest {
     void info() {
         Long id = 1L;
         Device info = deviceService.info(id);
-//        System.out.println(info);
+        Assertions.assertNotNull(info);
         Assertions.assertEquals(info.getId(), id);
     }
 
     @Test
     void all() {
         List<Device> list = deviceService.all();
-        System.out.println(list);
+        Assertions.assertNotNull(list);
         Assertions.assertNotNull(list);
     }
 

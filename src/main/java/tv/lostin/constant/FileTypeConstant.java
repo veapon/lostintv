@@ -1,6 +1,8 @@
 package tv.lostin.constant;
 
 import java.sql.Array;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Description
@@ -15,12 +17,7 @@ public class FileTypeConstant {
     public static final String TYPE_APE = "ape";
     public static final String TYPE_WAV = "wav";
 
-    public static String[] getMusicFileTypes() {
-        return new String[]{
-                TYPE_WAV,
-                TYPE_FLAC,
-                TYPE_MP3,
-                TYPE_APE
-        };
+    public static List<String> getMusicFileTypes() {
+        return Arrays.asList(TYPE_WAV, TYPE_APE, TYPE_FLAC, TYPE_MP3);
     }
 }

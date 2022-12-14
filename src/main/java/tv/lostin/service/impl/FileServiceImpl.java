@@ -1,7 +1,6 @@
 package tv.lostin.service.impl;
 
-import com.baomidou.mybatisplus.extension.conditions.query.LambdaQueryChainWrapper;
-import com.baomidou.mybatisplus.extension.conditions.update.LambdaUpdateChainWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.github.houbb.opencc4j.util.ZhConverterUtil;
 import lombok.AllArgsConstructor;
@@ -13,8 +12,8 @@ import org.jaudiotagger.tag.Tag;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
-import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
+import tv.lostin.constant.FileTypeConstant;
 import tv.lostin.entity.*;
 import tv.lostin.exception.DeviceTypeException;
 import tv.lostin.mapper.FileMapper;
@@ -54,8 +53,12 @@ public class FileServiceImpl extends ServiceImpl<FileMapper, File> implements Fi
     }
 
     @Override
-    @Async("asyncTaskExecutor")
+//    @Async("asyncTaskExecutor")
     public void getMetadata(File file) {
+        if (!FileTypeConstant.getMusicFileTypes().contains(file.getExtension())) {
+            log.warn("getMetadata skipped, unsupported file extension: " + file.getExtension());
+            return;
+        }
         Folder folder = folderService.info(file.getFolderId());
         Assert.notNull(folder, "folder does not exists or has been deleted: " + file);
 
@@ -73,25 +76,55 @@ public class FileServiceImpl extends ServiceImpl<FileMapper, File> implements Fi
 
         java.io.File fileIO  = new java.io.File(path);
         try {
-            // todo 应用路径规则生成artist/album
+            // todo
+            // 1、应用路径规则生成artist/album
+            // 2、从musicbrainz抓数据
             AudioFile audioFile = AudioFileIO.read(fileIO);
             Tag tag = audioFile.getTag();
-            String artist = tag.getFirst(FieldKey.ARTIST);
-            String album = tag.getFirst(FieldKey.ALBUM);
+            log.info(String.format("metadata: %s", tag.toString()));
+
+            String artist = ZhConverterUtil.toSimple(tag.getFirst(FieldKey.ARTIST));
+            String album = ZhConverterUtil.toSimple(tag.getFirst(FieldKey.ALBUM));
             String discNo = tag.getFirst(FieldKey.DISC_NO);
+            String title = ZhConverterUtil.toSimple(tag.getFirst(FieldKey.TITLE));
 
-            Artist art = artistService.lambdaQuery().eq(Artist::getName, ZhConverterUtil.toSimple(artist)).one();
+            Artist artistEntry = new Artist();
+            artistEntry.setName(artist);
+            artistEntry.setDeletedAt(null);
+            UpdateWrapper<Artist> updateWrapper = new UpdateWrapper<>();
+            updateWrapper.eq("name", artist);
+            artistService.saveOrUpdate(artistEntry, updateWrapper);
+            Long artistId = artistEntry.getId();
 
-            albumService.lambdaQuery()
-                    .eq(Album::getName, ZhConverterUtil.toSimple(album))
-                    .eq(Album::getArtistId, art.getId())
-                    .one();
+            Album albumEntry = new Album();
+            albumEntry.setArtistId(artistId);
+            albumEntry.setName(album);
+            albumEntry.setDeletedAt(null);
+            albumService.saveOrUpdate( albumEntry,
+                    albumService.lambdaUpdate().getWrapper()
+                            .eq(Album::getName, album)
+                            .eq(Album::getArtistId, artistId)
+            );
 
-            Track track = trackService.lambdaQuery().eq(Track::getFileId, file.getId()).one();
+            Track track = new Track();
+            track.setFileId(file.getId());
+            track.setArtistId(artistId);
+            track.setArtist(artist);
+            track.setDiscNo(discNo);
+            track.setTitle(title);
+            track.setAlbum(album);
+            track.setAlbumId(albumEntry.getId());
+            track.setDeletedAt(null);
+            trackService.saveOrUpdate(
+                    track,
+                    trackService.lambdaUpdate().getWrapper()
+                            .eq(Track::getAlbumId, albumEntry.getId())
+                            .eq(Track::getTitle, title)
+            );
+
         } catch (Exception e) {
             throw new RuntimeException(e.getMessage());
         }
-
     }
 
 }

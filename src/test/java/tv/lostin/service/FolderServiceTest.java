@@ -48,7 +48,7 @@ public class FolderServiceTest {
 
     @Test
     void info() {
-        Long id = 2L;
+        Long id = 1L;
         Folder info = folderService.info(id);
         System.out.println(info);
         Assertions.assertEquals(info.getId(), id);
@@ -72,6 +72,6 @@ public class FolderServiceTest {
 
     @Test
     void scan() throws Exception {
-        folderService.scan(2L);
+        folderService.scan(1L);
     }
 }

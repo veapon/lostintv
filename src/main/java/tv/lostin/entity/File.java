@@ -16,7 +16,6 @@ import java.util.Date;
 public class File extends BaseEntity {
     private String path;
     private String name;
-    private Integer directory;
     private Long folderId;
     private Long deviceId;
     private String extension;

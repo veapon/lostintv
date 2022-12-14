@@ -45,7 +45,8 @@ public class FolderServiceImpl extends ServiceImpl<FolderMapper, Folder> impleme
         folderEntity.setPath(dto.getPath());
         folderEntity.setMountPoint(dto.getMountPoint());
         folderEntity.setDeviceId(dto.getDeviceId());
-        folderMapper.insert(folderEntity);
+//        folderMapper.insert(folderEntity);
+        saveOrUpdate(folderEntity);
         return folderEntity;
     }
 

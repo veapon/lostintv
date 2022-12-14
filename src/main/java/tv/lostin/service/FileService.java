@@ -1,6 +1,8 @@
 package tv.lostin.service;
 
+import com.baomidou.mybatisplus.extension.service.IService;
 import tv.lostin.entity.File;
+import tv.lostin.entity.Track;
 
 /**
  * Description
@@ -8,7 +10,7 @@ import tv.lostin.entity.File;
  * @author veapon
  * @date 2022/8/31
  */
-public interface FileService {
+public interface FileService extends IService<File> {
 
     /**
      *

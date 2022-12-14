@@ -35,7 +35,7 @@ public class LocalService {
                 ls(f);
             } else {
                 String ext = FilenameUtils.getExtension(f.getName());
-                if (!Arrays.asList(FileTypeConstant.getMusicFileTypes()).contains(ext)) {
+                if (!FileTypeConstant.getMusicFileTypes().contains(ext)) {
                     continue;
                 }
                 try {
